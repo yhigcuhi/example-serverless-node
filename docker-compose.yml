@@ -1,0 +1,40 @@
+# docker compose versionとしての書き方のあれ
+version: "3.8"
+
+# 利用する コンテナ 一覧
+services:
+  # Serverless Frameworkのコマンドを実行する用の環境
+  serverless:
+    # 管理コンテナ名
+    container_name: ${APP_NAME}-serverless
+    # Dockerファイルにて 定義
+    build: 
+      context: ./docker/serverless
+      args: 
+        - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    working_dir: /app
+    # 場所
+    volumes:
+      - ./serverless-src/:/app
+    # 利用ポート
+    ports:
+        # 一旦 フロントエンド vite使う感じで
+        - ${API_PORT:-3000}:3000
+    # 環境設定値設定
+    environment:
+      # アプリ系
+      - APP_NAME=${APP_NAME}
+      - APP_ENV=${APP_ENV:-local}
+      # AWS cliとかで
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    # 常時起動
+    tty: True
+    # ログ
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
