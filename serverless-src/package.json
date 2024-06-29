@@ -2,9 +2,13 @@
   "name": "example-nodejs",
   "version": "1.0.0",
   "description": "",
+  "scripts": {
+    "dev": "serverless offline --host 0.0.0.0 --httpPort 3000"
+  },
+  "devDependencies": {
+    "serverless-offline": "^13.6.0"
+  },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.585.0",
-    "@aws-sdk/lib-dynamodb": "^3.585.0",
     "express": "^4.19.2",
     "serverless-http": "^3.2.0"
   }

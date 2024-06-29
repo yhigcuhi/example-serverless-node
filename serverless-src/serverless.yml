@@ -1,0 +1,56 @@
+# サービス名(プロジェクト名)
+# 参考: https://zenn.dev/lifewithpiano/articles/serverlessframework2304
+# 参考: https://www.serverless.com/framework/docs-providers-aws-guide-serverless-yml
+service: himedic-line-api
+# serverless frameworkとしてのバージョン
+frameworkVersion: '3'
+
+# 環境ごとの設定
+stages:
+  # デフォルト
+  default:
+    # 環境変数
+    params:
+      TZ: Asia/Tokyo
+      # 環境変数のテスト TODO: ${env:DEV_STRIPE_API_KEY}ってあるから .env読み込めんじゃね
+      appEnv: "local"
+  # 開発
+  dev:
+    # 環境変数
+    params:
+      TZ: Asia/Tokyo
+      # 環境変数のテスト
+      appEnv: "local"
+      # API_ENDPOINT: ${self:custom.api_endpoint} とか TODO
+
+# AWS Lambdaとしての基本設定
+provider:
+  name: aws
+  # 使用するプログラミング言語を指定
+  runtime: nodejs20.x
+  # リージョン
+  region: ap-northeast-1
+  # AWS IAM TODO: iam
+  # メモリ割当量 MB記述 default: 1024MB
+  # memorySize: 512
+  # タイムアウト(秒数) default: 6sec
+  # timeout: 10
+  # # 環境変数
+  # environment:
+  #   APP_ENV: ${param:appEnv}
+
+# Lambda + API Gateway の設定
+functions:
+  hello:
+    handler: handler.handler
+    events:
+      - http:
+          # URL
+          path: hello
+          method: get
+          # x-api-key 使わない系にする
+          private: false
+# serverless framework プラグイン
+plugins:
+  # ローカル開発用
+  - serverless-offline

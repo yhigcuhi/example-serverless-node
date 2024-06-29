@@ -10,8 +10,8 @@ RUN apt-get update && \
     unzip \
     vim
 
-# npm global install
-RUN npm install -g serverless
+# npm global install for serverless framework
+RUN npm install -g serverless@3.39.0
 
 # 作業ディレクトリ
 WORKDIR /app/app
