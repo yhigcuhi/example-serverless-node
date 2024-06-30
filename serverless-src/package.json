@@ -2,14 +2,22 @@
   "name": "example-nodejs",
   "version": "1.0.0",
   "description": "",
-  "main": "handler.js",
+  "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "serverless offline --host 0.0.0.0 --httpPort 3000"
   },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.140",
+    "@types/node": "^20.14.9",
+    "esbuild": "^0.21.5",
     "serverless-bundle": "^6.1.0",
     "serverless-dotenv-plugin": "^6.0.0",
-    "serverless-offline": "^13.6.0"
+    "serverless-esbuild": "^1.52.1",
+    "serverless-offline": "^13.6.0",
+    "typescript": "^5.5.2"
   },
   "dependencies": {
     "@kintone/rest-api-client": "^5.5.2"

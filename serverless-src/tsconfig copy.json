@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "lib": ["ESNext"],
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "isolatedModules": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "removeComments": true,
+      "strictNullChecks": true,
+      "allowJs": true,
+      "sourceMap": true,
+      "target": "ESNext",
+      "outDir": ".build",
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts"],
+    "exclude": [
+      "node_modules",
+      "**/*.spec.ts"
+    ]
+}

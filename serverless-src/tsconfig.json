@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "ESNext",
+    "outDir": ".build",
+    "moduleResolution": "node",
+    "lib": ["ESNext"],
+    "rootDir": "./src",
+    "strict": true,
+    "module": "commonjs",
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

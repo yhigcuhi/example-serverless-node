@@ -4,7 +4,7 @@ import { KintoneRestAPIClient } from '@kintone/rest-api-client';
 // kintone API リポジトリ 共通クラス
 export default class KintoneRepository {
     /* @var {KintoneRestAPIClient} */
-    // client;
+    private client: KintoneRestAPIClient
 
     /**
      * デフォルトコンストラクタ
@@ -20,7 +20,7 @@ export default class KintoneRepository {
      * @param {string|undefined} token API利用トークン
      * @returns {KintoneRestAPIClient} Kintone API接続 クライアント
      */
-    buildClient(token = '') {
+    buildClient(token = ''): KintoneRestAPIClient {
         // クライアントの作成
         return new KintoneRestAPIClient(this.buildClientConfig(token));
     }
@@ -31,9 +31,8 @@ export default class KintoneRepository {
      */
     buildClientConfig(token = '') {
         // 入力補完 認証
-        const auth = {};
+        const auth: Partial<{apiToken: string}> = {};
         if (token) auth.apiToken = token;
-console.log(process.env.KINTONE_BASE_URL);
         // KintoneRestAPIClient コンストラクタ引数のオプションの値
         return {
             // 基本接続先

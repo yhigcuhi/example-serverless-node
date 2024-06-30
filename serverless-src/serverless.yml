@@ -2,6 +2,7 @@
 # 参考: https://zenn.dev/lifewithpiano/articles/serverlessframework2304
 # 参考: https://www.serverless.com/framework/docs-providers-aws-guide-serverless-yml
 # 参考: https://github.com/AnomalyInnovations/serverless-nodejs-starter/blob/master/serverless.yml
+# TS としての作りでの参考になりそう: https://github.com/serverless/examples/blob/v3/aws-node-rest-api-typescript/serverless.yml
 service: himedic-line-api
 # serverless frameworkとしてのバージョン
 frameworkVersion: '3'
@@ -31,7 +32,25 @@ provider:
   runtime: nodejs20.x
   # リージョン
   region: ap-northeast-1
+  # ステージング
+  # stage: dev
   # AWS IAM TODO: iam
+  # iam:
+  #   role:
+  #     statements:
+  #       - Effect: "Allow"
+  #     Action:
+  #       - "s3:ListBucket"
+  #     Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+  #       - Effect: "Allow"
+  #     Action:
+  #       - "s3:PutObject"
+  #     Resource:
+  #       Fn::Join:
+  #         - ""
+  #         - - "arn:aws:s3:::"
+  #         - "Ref" : "ServerlessDeploymentBucket"
+  #         - "/*"
   # メモリ割当量 MB記述 default: 1024MB
   # memorySize: 512
   # タイムアウト(秒数) default: 6sec
@@ -45,8 +64,8 @@ provider:
 # Lambda + API Gateway の設定
 functions:
   hello:
-    handler: handler.hello
-    # handler: functions/handler.handler
+    # handler: handler.hello
+    handler: "src/handlers.hello"
     events:
       - http:
           # URL
@@ -55,7 +74,8 @@ functions:
           # x-api-key 使わない系にする
           private: false
   kintoneTest:
-    handler: handler.kintoneTest
+    # handler: handler.kintoneTest
+    handler: "src/handlers.kintoneTest"
     events:
       - http:
           # URL
@@ -63,6 +83,21 @@ functions:
           method: get
           # x-api-key 使わない系にする
           private: false
+# プラグインなどによるカスタマイズ
+custom:
+  # esbuildプラグイン位よる拡張
+  # 参考: https://zenn.dev/mistletoe/books/93f5810c20eb9a/viewer/48cd17
+  # 参考: ↑の github https://github.com/theMistletoe/slsfw-for-book
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude: ['aws-sdk']
+    # ビルドターゲットらへん
+    target: 'node20'
+    define: { 'require.resolve': undefined }
+    platform: 'node'
+    concurrency: 10
 # 資材管理
 package:
   # functionsの 資材としては それぞれ個別でzipにして管理 (s3のアップロード先も変わる？)
@@ -71,5 +106,6 @@ package:
 # serverless framework プラグイン
 plugins:
   - serverless-offline # ローカル開発用
-  - serverless-bundle # import exportを使えるように webpackの bundle化
+  - serverless-esbuild # esbuild化へ
+  # - serverless-bundle # import exportを使えるように webpackの bundle化
   - serverless-dotenv-plugin # .envファイルでの環境変数 読み込み

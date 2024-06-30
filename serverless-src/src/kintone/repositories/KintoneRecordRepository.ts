@@ -4,14 +4,14 @@ import KintoneRepository from './KintoneRepository';
 // kintone レコード操作 API リポジトリ 共通クラス
 export default class KintoneRecordRepository extends KintoneRepository {
     /* @var {number} Kintone アプリID */
-    // app;
+    private app: number;
 
     /**
      * デフォルトコンストラクタ
      * @param {number} app 接続する Kintone アプリID
      * @param {string|undefined} token API利用トークン
      */
-    constructor(app, token = '') {
+    constructor(app: number, token = '') {
         super(token);
         this.app = app;
     }
@@ -22,16 +22,17 @@ export default class KintoneRecordRepository extends KintoneRepository {
      * @returns {Promise<Record<string, any>>} 検索結果
      * @throws KintoneAPIException TODO:共通 KintoneAPIエラー今後
      */
-    async findById(id)
+    async findById(id: number)
     {
-        try {
-            // Kintone検索 実行
-            const { record } = await this.getRecordClient().getRecord({app: this.app, id});
-            // 検索結果返却
-            return record;
-        } catch (e) {
-            console.error('TODO: KintoneAPI通信エラー 今後');
-        }
+        return {'AAA': 'BBB'}
+        // try {
+        //     // Kintone検索 実行
+        //     const { record } = await this.getRecordClient().getRecord({app: this.app, id});
+        //     // 検索結果返却
+        //     return record;
+        // } catch (e) {
+        //     console.error('TODO: KintoneAPI通信エラー 今後');
+        // }
     }
     /* getter */
     /**
