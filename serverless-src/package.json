@@ -2,14 +2,13 @@
   "name": "example-nodejs",
   "version": "1.0.0",
   "description": "",
+  "main": "handler.js",
   "scripts": {
     "dev": "serverless offline --host 0.0.0.0 --httpPort 3000"
   },
   "devDependencies": {
+    "serverless-bundle": "^6.1.0",
+    "serverless-dotenv-plugin": "^6.0.0",
     "serverless-offline": "^13.6.0"
-  },
-  "dependencies": {
-    "express": "^4.19.2",
-    "serverless-http": "^3.2.0"
   }
 }

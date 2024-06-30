@@ -1,6 +1,7 @@
 # サービス名(プロジェクト名)
 # 参考: https://zenn.dev/lifewithpiano/articles/serverlessframework2304
 # 参考: https://www.serverless.com/framework/docs-providers-aws-guide-serverless-yml
+# 参考: https://github.com/AnomalyInnovations/serverless-nodejs-starter/blob/master/serverless.yml
 service: himedic-line-api
 # serverless frameworkとしてのバージョン
 frameworkVersion: '3'
@@ -36,13 +37,15 @@ provider:
   # タイムアウト(秒数) default: 6sec
   # timeout: 10
   # # 環境変数
-  # environment:
-  #   APP_ENV: ${param:appEnv}
+  environment:
+    APP_ENV: ${env:APP_ENV}
+  #   SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
 
 # Lambda + API Gateway の設定
 functions:
   hello:
-    handler: handler.handler
+    handler: handler.hello
+    # handler: functions/handler.handler
     events:
       - http:
           # URL
@@ -50,7 +53,13 @@ functions:
           method: get
           # x-api-key 使わない系にする
           private: false
+# 資材管理
+package:
+  # functionsの 資材としては それぞれ個別でzipにして管理 (s3のアップロード先も変わる？)
+  individually: true
+
 # serverless framework プラグイン
 plugins:
-  # ローカル開発用
-  - serverless-offline
+  - serverless-offline # ローカル開発用
+  - serverless-bundle # import exportを使えるように webpackの bundle化
+  - serverless-dotenv-plugin # .envファイルでの環境変数 読み込み

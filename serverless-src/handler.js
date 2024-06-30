@@ -1,12 +1,7 @@
-// エンドポイント処理
-module.exports.handler = async (_event) => {
-  console.log(_event)
+/* import lambda 関数 */
+import { hello } from './functions/hello';
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: "hello world",
-    }),
-  };
+/* export lambda関数 */
+export {
+  hello
 };
-
