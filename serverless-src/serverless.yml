@@ -39,7 +39,8 @@ provider:
   # # 環境変数
   environment:
     APP_ENV: ${env:APP_ENV}
-  #   SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
+    # kintone周りの環境変数
+    KINTONE_BASE_URL: ${env:KINTONE_BASE_URL}
 
 # Lambda + API Gateway の設定
 functions:
@@ -50,6 +51,15 @@ functions:
       - http:
           # URL
           path: hello
+          method: get
+          # x-api-key 使わない系にする
+          private: false
+  kintoneTest:
+    handler: handler.kintoneTest
+    events:
+      - http:
+          # URL
+          path: kintone/test
           method: get
           # x-api-key 使わない系にする
           private: false

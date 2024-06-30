@@ -1,6 +1,36 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "../../@kintone/rest-api-client/index.mjs":
+/*!************************************************!*\
+  !*** ../../@kintone/rest-api-client/index.mjs ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   KintoneAbortSearchError: () => (/* binding */ KintoneAbortSearchError),
+/* harmony export */   KintoneAllRecordsError: () => (/* binding */ KintoneAllRecordsError),
+/* harmony export */   KintoneRestAPIClient: () => (/* binding */ KintoneRestAPIClient),
+/* harmony export */   KintoneRestAPIError: () => (/* binding */ KintoneRestAPIError)
+/* harmony export */ });
+/* harmony import */ var module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! module */ "module");
+/* harmony import */ var module__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(module__WEBPACK_IMPORTED_MODULE_0__);
+
+// eslint-disable-next-line node/no-unsupported-features/node-builtins
+const require = module__WEBPACK_IMPORTED_MODULE_0___default().createRequire("file:///app/node_modules/@kintone/rest-api-client/index.mjs");
+
+const {
+  KintoneRestAPIClient,
+  KintoneAbortSearchError,
+  KintoneAllRecordsError,
+  KintoneRestAPIError,
+} = require(".");
+
+
+/***/ }),
+
 /***/ "../../../functions/hello.js":
 /*!***********************************!*\
   !*** ../../../functions/hello.js ***!
@@ -35,6 +65,229 @@ const message = ({
 }) => new Promise((resolve, reject) => setTimeout(() => {
   resolve(`${rest.copy} (with a delay)`);
 }, time * 1000));
+
+/***/ }),
+
+/***/ "../../../functions/kintoneTest.js":
+/*!*****************************************!*\
+  !*** ../../../functions/kintoneTest.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ kintoneTest)
+/* harmony export */ });
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "../../source-map-support/register.js");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _kintone_repositories__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../kintone/repositories */ "../../../kintone/repositories/index.js");
+
+/* import リポジトリ */
+
+async function kintoneTest(event, context) {
+  // inject
+  const repository = new _kintone_repositories__WEBPACK_IMPORTED_MODULE_1__.TestRepository();
+  // 結果返却
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: `find result [${JSON.stringify(await repository.findById(1))}]`
+    })
+  };
+}
+;
+
+/***/ }),
+
+/***/ "../../../kintone/repositories/KintoneRecordRepository.js":
+/*!****************************************************************!*\
+  !*** ../../../kintone/repositories/KintoneRecordRepository.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ KintoneRecordRepository)
+/* harmony export */ });
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "../../source-map-support/register.js");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _KintoneRepository__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./KintoneRepository */ "../../../kintone/repositories/KintoneRepository.js");
+
+/* import 親 */
+
+
+// kintone レコード操作 API リポジトリ 共通クラス
+class KintoneRecordRepository extends _KintoneRepository__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  /* @var {number} Kintone アプリID */
+  // app;
+
+  /**
+   * デフォルトコンストラクタ
+   * @param {number} app 接続する Kintone アプリID
+   * @param {string|undefined} token API利用トークン
+   */
+  constructor(app, token = '') {
+    super(token);
+    this.app = app;
+  }
+
+  /**
+   * 検索 by ID
+   * @param {number} id レコード 番号 (Kintone アプリのレコードのPK)
+   * @returns {Promise<Record<string, any>>} 検索結果
+   * @throws KintoneAPIException TODO:共通 KintoneAPIエラー今後
+   */
+  async findById(id) {
+    try {
+      // Kintone検索 実行
+      const {
+        record
+      } = await this.getRecordClient().getRecord({
+        app: this.app,
+        id
+      });
+      // 検索結果返却
+      return record;
+    } catch (e) {
+      console.error('TODO: KintoneAPI通信エラー 今後');
+    }
+  }
+  /* getter */
+  /**
+   * @returns {RecordClient} Kintone Record API接続 クライアント
+   */
+  getRecordClient() {
+    return this.getClient().record;
+  }
+}
+
+/***/ }),
+
+/***/ "../../../kintone/repositories/KintoneRepository.js":
+/*!**********************************************************!*\
+  !*** ../../../kintone/repositories/KintoneRepository.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ KintoneRepository)
+/* harmony export */ });
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "../../source-map-support/register.js");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _kintone_rest_api_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @kintone/rest-api-client */ "../../@kintone/rest-api-client/index.mjs");
+
+/* import kintone SDK */
+
+
+// kintone API リポジトリ 共通クラス
+class KintoneRepository {
+  /* @var {KintoneRestAPIClient} */
+  // client;
+
+  /**
+   * デフォルトコンストラクタ
+   * @param {string|undefined} token API利用トークン
+   */
+  constructor(token = '') {
+    this.client = this.buildClient(token);
+  }
+
+  /* ドメイン 関数 */
+  /**
+   * Kintone API接続 クライアント作成
+   * @param {string|undefined} token API利用トークン
+   * @returns {KintoneRestAPIClient} Kintone API接続 クライアント
+   */
+  buildClient(token = '') {
+    // クライアントの作成
+    return new _kintone_rest_api_client__WEBPACK_IMPORTED_MODULE_1__.KintoneRestAPIClient(this.buildClientConfig(token));
+  }
+  /**
+   * Kintone API接続 クライアント設定値
+   * @param {string|undefined} token API利用トークン
+   * @returns {Options} Kintone API接続クライアント
+   */
+  buildClientConfig(token = '') {
+    // 入力補完 認証
+    const auth = {};
+    if (token) auth.apiToken = token;
+    console.log(process.env.KINTONE_BASE_URL);
+    // KintoneRestAPIClient コンストラクタ引数のオプションの値
+    return {
+      // 基本接続先
+      baseUrl: process.env.KINTONE_BASE_URL,
+      // 認証
+      auth
+      // // クライアント証明書
+      // clientCertAuth: {
+      //     pfxFilePath: process.env.KINTONE_CERT_FILE_PATH,
+      //     password: process.env.KINTONE_CERT_FILE_PASSWORD,
+      // }
+    };
+  }
+  /* getter */
+  /**
+   * @returns {KintoneRestAPIClient} Kintone API接続 クライアント
+   */
+  getClient() {
+    return this.client;
+  }
+}
+
+/***/ }),
+
+/***/ "../../../kintone/repositories/TestRepository.js":
+/*!*******************************************************!*\
+  !*** ../../../kintone/repositories/TestRepository.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TestRepository)
+/* harmony export */ });
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "../../source-map-support/register.js");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _KintoneRecordRepository__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./KintoneRecordRepository */ "../../../kintone/repositories/KintoneRecordRepository.js");
+
+/* import 親 */
+
+
+// kintone TEST API レコード操作 リポジトリ
+class TestRepository extends _KintoneRecordRepository__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  // デフォルトコンストラクタ
+  constructor() {
+    super(5, '77AoRJj7Mpyjg1qXq51U8hWNrcZpbWsCS8rysSwp');
+  }
+}
+
+/***/ }),
+
+/***/ "../../../kintone/repositories/index.js":
+/*!**********************************************!*\
+  !*** ../../../kintone/repositories/index.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TestRepository: () => (/* reexport safe */ _TestRepository__WEBPACK_IMPORTED_MODULE_1__["default"])
+/* harmony export */ });
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "../../source-map-support/register.js");
+/* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _TestRepository__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TestRepository */ "../../../kintone/repositories/TestRepository.js");
+
+/* リポジトリ 集約 */
+
+
+/* export */
+
 
 /***/ }),
 
@@ -3999,6 +4252,17 @@ module.exports = require("fs");
 
 /***/ }),
 
+/***/ "module":
+/*!*************************!*\
+  !*** external "module" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("module");
+
+/***/ }),
+
 /***/ "path":
 /*!***********************!*\
   !*** external "path" ***!
@@ -4099,13 +4363,16 @@ var __webpack_exports__ = {};
   \***************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   hello: () => (/* reexport safe */ _functions_hello__WEBPACK_IMPORTED_MODULE_1__.hello)
+/* harmony export */   hello: () => (/* reexport safe */ _functions_hello__WEBPACK_IMPORTED_MODULE_1__.hello),
+/* harmony export */   kintoneTest: () => (/* reexport safe */ _functions_kintoneTest__WEBPACK_IMPORTED_MODULE_2__["default"])
 /* harmony export */ });
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! source-map-support/register */ "../../source-map-support/register.js");
 /* harmony import */ var source_map_support_register__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(source_map_support_register__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _functions_hello__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./functions/hello */ "../../../functions/hello.js");
+/* harmony import */ var _functions_kintoneTest__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./functions/kintoneTest */ "../../../functions/kintoneTest.js");
 
 /* import lambda 関数 */
+
 
 
 /* export lambda関数 */
