@@ -2,7 +2,6 @@
 export const hello = async (event, context) => {
     // .envを読み込みの確認
     const APP_ENV = process.env.APP_ENV;
-
     return {
       statusCode: 200,
       body: JSON.stringify({

@@ -10,5 +10,8 @@
     "serverless-bundle": "^6.1.0",
     "serverless-dotenv-plugin": "^6.0.0",
     "serverless-offline": "^13.6.0"
+  },
+  "dependencies": {
+    "@kintone/rest-api-client": "^5.5.2"
   }
 }
